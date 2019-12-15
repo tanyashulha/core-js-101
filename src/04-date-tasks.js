@@ -81,8 +81,21 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const distinctionn = endDate.getTime() - startDate.getTime();
+  let ms = distinctionn % 1000;
+  let sec = Math.floor(((distinctionn - ms) / 1000) % 60);
+  let min = Math.floor(((distinctionn - ms - sec) / (60 * 1000)) % 60);
+  let hours = Math.floor(((distinctionn - ms - sec - min) / (60 * 60 * 1000)) % 60);
+
+  if (ms < 100) ms = `00${ms}`;
+  else if (ms < 10) ms = `0${ms}`;
+
+  sec = sec < 10 ? `0${sec}` : sec;
+  min = min < 10 ? `0${min}` : min;
+  hours = hours < 10 ? `0${hours}` : hours;
+
+  return `${hours}:${min}:${sec}.${ms}`;
 }
 
 
@@ -100,8 +113,19 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const hours = date.getUTCHours() > 12 ? date.getUTCHours() % 12 : date.getUTCHours();
+  const min = date.getUTCMinutes();
+
+  const cornMin = min * 6;
+  const cornHour = hours * 30 + cornMin / 12;
+
+  let corn = Math.abs(cornHour - cornMin) * (Math.PI / 180);
+
+  if (corn > Math.PI) {
+    corn -= Math.PI;
+  }
+  return corn;
 }
 
 
