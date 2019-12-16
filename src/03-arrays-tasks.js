@@ -482,8 +482,12 @@ function sortCitiesArray(arr) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return new Array(n).fill().map((a, b) => {
+    const newArr = new Array(n).fill(0);
+    newArr[b] = 1;
+    return newArr;
+  });
 }
 
 /**
@@ -553,8 +557,17 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  return array.reduce((acc, value) => {
+    if (!acc.get(keySelector(value))) acc.set(keySelector(value), [valueSelector(value)]);
+    else {
+      acc.set(
+        keySelector(value),
+        acc.get(keySelector(value)).concat(valueSelector(value)),
+      );
+    }
+    return acc;
+  }, new Map());
 }
 
 
@@ -571,8 +584,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return [].concat(...arr.map((value) => childrenSelector(value)));
 }
 
 
@@ -588,8 +601,8 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((acc, value) => acc[value], arr);
 }
 
 
@@ -611,8 +624,11 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const top = arr.slice(0, Math.floor(arr.length / 2));
+  const mid = arr.slice(Math.floor(arr.length / 2), Math.ceil(arr.length / 2));
+  const bot = arr.slice(Math.ceil(arr.length / 2));
+  return [...bot, ...mid, ...top];
 }
 
 
